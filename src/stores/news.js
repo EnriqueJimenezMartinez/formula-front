@@ -3,8 +3,8 @@ import api from '@/services/api'
 
 export const useNewsStore = defineStore('news', {
   state: () => ({
-    news: localStorage.getItem('news') || [],
-    actualNews: localStorage.getItem('actualNews') || [],
+    news: JSON.parse(localStorage.getItem('news') || '[]'),
+    actualNews: JSON.parse(localStorage.getItem('actualNews') || 'null'),
   }),
   actions: {
     viewAllNews() {
@@ -16,10 +16,33 @@ export const useNewsStore = defineStore('news', {
       })
     },
     viewNews(slug) {
-      return api.get(`/news/${slug}`).then((resp) => {
-        this.actualNews = resp.data.data.news
-        localStorage.setItem('actualNews', this.actualNews)
-      })
+      return api
+        .get(`/news/view/${encodeURIComponent(slug)}`)
+        .then((resp) => {
+          console.log('Respuesta de la API:', resp.data)
+
+          // Usar directamente la noticia si resp.data.data es un objeto
+          const news = resp.data.data
+
+          if (news) {
+            this.actualNews = news
+            localStorage.setItem('actualNews', JSON.stringify(this.actualNews))
+          } else {
+            console.error('No se encontró la noticia con el slug:', slug)
+          }
+        })
+        .catch((e) => {
+          console.error('Error al cargar la noticia:', e)
+        })
+    },
+    checkDate(date){
+      return api
+        .post(`/news/last-date/${date}`)
+        .then((resp) => {
+          console.log(resp)
+        })
+
+
     },
   },
 })

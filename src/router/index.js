@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '../views/LoginView.vue'
 import HomeView from '../views/HomeView.vue'
+import ViewNews from '@/views/ViewNews.vue'
 import NewsGrid from '../views/NewsGrid.vue'
 
 const router = createRouter({
@@ -29,6 +30,12 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/LoginView.vue'),
     },
+    {
+      path: '/news/:slug',
+      name: 'ViewNews',
+      component: ViewNews,
+      props: true, // Para pasar el parámetro de la ruta como prop al componente
+    }
   ],
 })
 

@@ -25,7 +25,7 @@ async function onSubmit() {
   error.value = ''
   auth
     .login(email.value, password.value)
-    .then(({ token, expires }) => {
+    .then(() => {
       router.push({ name: 'Home' })
     })
     .catch((e) => {
