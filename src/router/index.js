@@ -3,6 +3,9 @@ import LoginView from '../views/LoginView.vue'
 import HomeView from '../views/HomeView.vue'
 import ViewNews from '@/views/ViewNews.vue'
 import NewsGrid from '../views/NewsGrid.vue'
+import PositionView from '@/views/PositionView.vue'
+
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,17 +28,19 @@ const router = createRouter({
     {
       path: '/about',
       name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/LoginView.vue'),
     },
     {
       path: '/news/:slug',
       name: 'ViewNews',
       component: ViewNews,
-      props: true, // Para pasar el parámetro de la ruta como prop al componente
-    }
+      props: true,
+    },
+    {
+      path: '/Ranking',
+      name: 'Ranking',
+      component: PositionView,
+    },
   ],
 })
 

@@ -2,7 +2,7 @@
   <div class="card h-100 shadow-sm">
     <div class="card-body">
       <h5 class="card-title text-primary">
-        <router-link :to="'/news/' + news.slug">{{ news.title }}</router-link>
+        <router-link style="color:black" :to="'/news/' + news.slug">{{ news.title }}</router-link>
       </h5>
       <p class="card-text">{{ news.body }}</p>
     </div>
