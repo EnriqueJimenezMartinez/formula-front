@@ -21,10 +21,21 @@ export const useNewsStore = defineStore('news', {
         .then((resp) => {
           console.log('Respuesta de la API:', resp.data)
 
-          // Usar directamente la noticia si resp.data.data es un objeto
           const news = resp.data.data
 
           if (news) {
+            // Validamos si hay image_url y si es válida (opcional)
+            if (
+              news.image_url &&
+              (news.image_url.endsWith('.jpg') ||
+                news.image_url.endsWith('.png') ||
+                news.image_url.endsWith('.webp'))
+            ) {
+              console.log('Imagen válida encontrada:', news.image_url)
+            } else {
+              console.log('No se encontró una imagen válida para esta noticia.')
+            }
+
             this.actualNews = news
             localStorage.setItem('actualNews', JSON.stringify(this.actualNews))
           } else {
@@ -35,14 +46,10 @@ export const useNewsStore = defineStore('news', {
           console.error('Error al cargar la noticia:', e)
         })
     },
-    checkDate(date){
-      return api
-        .post(`/news/last-date/${date}`)
-        .then((resp) => {
-          console.log(resp)
-        })
-
-
-    },
-  },
+    /*checkDate(date) {
+      return api.post(`/news/last-date/${date}`).then((resp) => {
+        console.log(resp)
+      })
+    },*/
+  }
 })
