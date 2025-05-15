@@ -98,22 +98,6 @@ function tagClass(tag) {
   border-radius: 12px;
 }
 
-.bg-light {
-  background-color: #f5f5f5;
-}
-
-.bg-white {
-  background-color: #ffffff;
-}
-
-.text-dark {
-  color: #212529;
-}
-
-.card-body {
-  background-color: #ffffff;
-}
-
 .tag-hover {
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
   cursor: pointer;
@@ -121,37 +105,6 @@ function tagClass(tag) {
 .tag-hover:hover {
   transform: scale(1.1);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.badge {
-  background-color: #e0e0e0;
-  color: #212529;
-  font-weight: 600;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-}
-
-.badge:hover {
-  background-color: #c8c8c8;
-}
-
-.spinner-border {
-  border-color: #e0e0e0;
-}
-
-a {
-  color: #007bff;
-  text-decoration: none;
-}
-
-a:hover {
-  color: #0056b3;
-  text-decoration: underline;
-}
-
-body {
-  font-family: 'Arial', sans-serif;
-  color: #212529;
 }
 
 .card img {

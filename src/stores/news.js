@@ -24,7 +24,6 @@ export const useNewsStore = defineStore('news', {
           const news = resp.data.data
 
           if (news) {
-            // Validamos si hay image_url y si es válida (opcional)
             if (
               news.image_url &&
               (news.image_url.endsWith('.jpg') ||

@@ -8,8 +8,13 @@ import FooterComponent from './components/FooterComponent.vue'
 
   <RouterView />
 
-  
+
   <FooterComponent />
 </template>
 
 
+<style>
+  html {
+  overflow-y: scroll;
+}
+</style>

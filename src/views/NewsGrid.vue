@@ -10,20 +10,25 @@
 
         <div class="row mb-4">
           <div class="col-md-6 mb-2 mb-md-0">
-            <input
-              v-model="searchQuery"
-              type="text"
-              class="form-control shadow-sm bg-white border-secondary"
-              placeholder="🔎 Buscar por título o autor..."
-            />
+            <div class="input-group shadow-sm">
+              <span class="input-group-text bg-white border-secondary">
+                <i class="bi bi-search"></i>
+              </span>
+              <input
+                v-model="searchQuery"
+                type="text"
+                class="form-control bg-white border-secondary"
+                placeholder="Buscar por título o autor..."
+              />
+            </div>
           </div>
           <div class="col-md-6">
             <select
               v-model="sortOrder"
               class="form-select shadow-sm bg-white text-black border-secondary custom-select"
             >
-              <option value="desc">🕒 Más recientes</option>
-              <option value="asc">📜 Más antiguos</option>
+              <option value="desc">Más recientes</option>
+              <option value="asc">Más antiguos</option>
             </select>
           </div>
         </div>
@@ -40,7 +45,6 @@
           <div class="col" v-for="(n, index) in filteredNews" :key="index">
             <div class="card shadow border-0 rounded-4 h-100 news-card bg-white text-dark">
               <div class="card-body p-4">
-                <!-- Imagen de la noticia (si existe) -->
                 <div v-if="n.image_url" class="mb-3">
                   <img
                     :src="n.image_url"
@@ -180,18 +184,6 @@ select.form-select {
   color: #000;
 }
 
-input.form-control:focus,
-select.form-select:focus {
-  border-color: #212529;
-  box-shadow: 0 0 10px rgba(33, 37, 41, 0.4);
-}
-
-input.form-control:focus,
-select.form-select:focus,
-input.form-control {
-  color: #000;
-}
-
 .btn-outline-light {
   border-radius: 12px;
   border-color: #212529;
@@ -212,20 +204,11 @@ input.form-control {
   justify-content: flex-start;
   align-items: center;
   margin-top: auto;
-  gap: 1rem; 
-}
-
-.card-body .d-flex .btn-sm {
-  font-size: 0.8rem;
-  margin-left: 0;
+  gap: 1rem;
 }
 
 .card-body .d-flex .btn-outline-light {
   margin-left: 0;
-}
-
-.card-body .d-flex .btn-outline-light:first-child {
-  margin-right: auto;
 }
 
 .card-body .d-flex .btn-sm:last-child {
@@ -269,15 +252,6 @@ input.form-control {
 
 input.form-control {
   color: #000;
-}
-
-h5.card-title {
-  font-size: 1.2rem;
-  font-weight: 600;
-}
-
-.card-body p {
-  font-size: 1rem;
 }
 
 .btn-sm {
