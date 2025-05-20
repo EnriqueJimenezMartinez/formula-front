@@ -1,17 +1,24 @@
 import axios from 'axios'
 import { useAuthStore } from '@/stores/auth'
 
-// Base de tu API
+// Base URL dinámica
+const baseURL = import.meta.env.VITE_API_BASE_URL
+  ? import.meta.env.VITE_API_BASE_URL
+  : import.meta.env.MODE === 'production'
+    ? 'https://gtdriveschool.com/api'
+    : 'http://localhost:8765/api'
+
+// Crear instancia de Axios
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'https://gtdriveschool.com/api',
-  headers: { 'Content-Type': 'application/json' }
+  baseURL,
+  headers: { 'Content-Type': 'application/json' },
 })
 
-// Interceptor para inyectar el token en todas las peticiones
-api.interceptors.request.use(config => {
-  const { token } = useAuthStore()
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`
+// Interceptor de solicitud para incluir token dinámicamente
+api.interceptors.request.use((config) => {
+  const authStore = useAuthStore() // ✅ Llamado dentro del interceptor
+  if (authStore.token) {
+    config.headers.Authorization = `Bearer ${authStore.token}`
   }
   return config
 })

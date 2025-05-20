@@ -43,6 +43,13 @@ export const useNewsStore = defineStore('news', {
         })
         .catch((e) => {
           console.error('Error al cargar la noticia:', e)
+          if (e.response) {
+            console.error('Respuesta del servidor:', e.response.data)
+          } else if (e.request) {
+            console.error('No hubo respuesta del servidor. Verifica CORS o conectividad.')
+          } else {
+            console.error('Error al configurar la solicitud:', e.message)
+          }
         })
     },
     /*checkDate(date) {
@@ -50,5 +57,5 @@ export const useNewsStore = defineStore('news', {
         console.log(resp)
       })
     },*/
-  }
+  },
 })
