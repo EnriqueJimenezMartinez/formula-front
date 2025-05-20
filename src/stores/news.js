@@ -17,7 +17,7 @@ export const useNewsStore = defineStore('news', {
     },
     viewNews(slug) {
       return api
-        .get(`/news/${encodeURIComponent(slug)}`)
+        .get(`/news/view/${encodeURIComponent(slug)}`)
         .then((resp) => {
           console.log('Respuesta de la API:', resp.data)
 
