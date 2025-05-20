@@ -1,3 +1,4 @@
+
 <template>
   <div
     id="layoutSidenav_content"
@@ -154,6 +155,17 @@ const filteredNews = computed(() => {
 </script>
 
 <style scoped>
+* {
+  font-family: 'Lato', sans-serif;
+}
+
+h2,
+.card-title,
+.modal-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+}
+
 .news-card {
   background-color: #ffffff;
   color: #212529;
@@ -182,6 +194,7 @@ select.form-select {
   background-color: #ffffff;
   border-radius: 12px;
   color: #000;
+  font-family: 'Lato', sans-serif;
 }
 
 .btn-outline-light {
@@ -190,13 +203,13 @@ select.form-select {
   color: #212529;
   background-color: transparent;
   transition: all 0.2s ease-in-out;
+  font-family: 'Lato', sans-serif;
 }
 
 .btn-outline-light:hover {
   background-color: #343a40 !important;
   color: #ffffff;
   border-color: #212529;
-  transition: 0.3s ease-in-out;
 }
 
 .card-body .d-flex {
@@ -215,30 +228,9 @@ select.form-select {
   margin-left: auto;
 }
 
-.card-title {
-  margin-bottom: 0.5rem;
-}
-
 .card-title i {
   vertical-align: middle;
   margin-left: 0.5rem;
-  margin-top: 0;
-}
-
-.card-body p {
-  margin-bottom: 1.5rem;
-}
-
-.card-body .d-flex .btn-sm {
-  font-size: 0.8rem;
-}
-
-.card-body .d-flex .btn-sm:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.card-title i {
-  vertical-align: middle;
 }
 
 .modal-content {
@@ -248,10 +240,6 @@ select.form-select {
 .spinner-border {
   width: 2rem;
   height: 2rem;
-}
-
-input.form-control {
-  color: #000;
 }
 
 .btn-sm {

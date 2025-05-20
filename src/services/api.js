@@ -1,9 +1,9 @@
 import axios from 'axios'
 import { useAuthStore } from '@/stores/auth'
 
-// Base de tu API 
+// Base de tu API
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8765/api',
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'https://gtdriveschool.com/api',
   headers: { 'Content-Type': 'application/json' }
 })
 

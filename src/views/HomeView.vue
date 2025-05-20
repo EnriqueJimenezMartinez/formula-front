@@ -14,19 +14,19 @@
 
       <p class="fs-5">
         Consulta <span class="text-muted">clasificaciones</span>,
-        <span class="text-muted">noticias</span>, <span class="text-muted">pilotos</span> y mucho
-        más sobre la temporada <strong>2025</strong>.
+        <span class="text-muted">noticias</span>, <span class="text-muted">carreras</span> y mucho
+        más sobre la temporada <strong>2024-2025</strong>.
       </p>
 
       <div class="mt-4 d-flex justify-content-center gap-3 flex-wrap">
         <router-link to="/calendario" class="btn btn-outline-dark btn-lg">
           <i class="bi bi-calendar-event me-2"></i>Calendario
         </router-link>
-        <router-link to="/pilots" class="btn btn-outline-dark btn-lg">
-          <i class="bi bi-person-lines-fill me-2"></i>Pilotos
-        </router-link>
         <router-link to="/news" class="btn btn-outline-dark btn-lg">
           <i class="bi bi-newspaper me-2"></i>Noticias
+        </router-link>
+        <router-link to="/ranking" class="btn btn-outline-dark btn-lg">
+         <i class="bi bi-bar-chart-line me-2"></i>Clasificación
         </router-link>
       </div>
     </div>
