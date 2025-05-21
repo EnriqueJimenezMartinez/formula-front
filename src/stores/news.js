@@ -17,7 +17,7 @@ export const useNewsStore = defineStore('news', {
     },
     viewNews(slug) {
       return api
-        .get(`/news/view/${encodeURIComponent(slug)}`)
+        .post('/news/view', { slug }) // 👈 el slug se envía en el body
         .then((resp) => {
           console.log('Respuesta de la API:', resp.data)
 
