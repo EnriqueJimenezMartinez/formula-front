@@ -3,7 +3,17 @@ import { ref, watch, onMounted } from 'vue'
 import HeaderComponent from './components/HeaderComponent.vue'
 import FooterComponent from './components/FooterComponent.vue'
 
+const STORAGE_KEY = 'darkModePreference'
 const isDarkMode = ref(false)
+
+onMounted(() => {
+  const saved = localStorage.getItem(STORAGE_KEY)
+  if (saved !== null) {
+    isDarkMode.value = saved === 'true'
+  } else {
+    isDarkMode.value = false
+  }
+})
 
 watch(isDarkMode, (val) => {
   if (val) {
@@ -11,15 +21,13 @@ watch(isDarkMode, (val) => {
   } else {
     document.body.classList.remove('dark-mode')
   }
-})
-
-onMounted(() => {
-  isDarkMode.value = true
+  localStorage.setItem(STORAGE_KEY, val.toString())
 })
 </script>
 
 <template>
   <HeaderComponent />
+
 
   <RouterView />
 
@@ -46,7 +54,6 @@ body.dark-mode .navbar {
   border-color: #333 !important;
 }
 
-/* Botones outline oscuro */
 body.dark-mode .btn-outline-dark {
   border-color: #ccc !important;
   color: #ccc !important;
@@ -57,7 +64,6 @@ body.dark-mode .btn-outline-dark:hover {
   color: #fff !important;
 }
 
-/* Tarjetas con fondo y texto claros */
 body.dark-mode .card {
   background-color: #1e1e1e !important;
   color: #fff !important;
@@ -137,7 +143,7 @@ body.dark-mode .table-secondary {
 }
 
 body.dark-mode a {
-  color: #9ecbff; 
+  color: #9ecbff;
 }
 
 body.dark-mode .border {
@@ -148,5 +154,4 @@ body.dark-mode .spinner-border {
   border-color: #aaa;
   border-right-color: transparent;
 }
-
 </style>
