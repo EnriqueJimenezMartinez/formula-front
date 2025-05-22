@@ -1,15 +1,17 @@
 <template>
   <div class="container my-4">
-    <h2 class="mb-4 text-center text-dark fw-bold">🏁 Resultados del Gran Premio</h2>
+    <h2 class="mb-4 text-center fw-bold text-dark-mode">
+      🏁 Resultados del Gran Premio
+    </h2>
 
     <div v-if="results.length">
       <h4 class="text-center mb-4 text-danger fw-semibold">
         {{ raceName }}
       </h4>
 
-      <div class="table-responsive rounded-4 shadow-sm overflow-hidden border">
+      <div class="table-responsive rounded-4 shadow-sm border">
         <table class="table table-hover align-middle mb-0">
-          <thead class="table-secondary text-center">
+          <thead class="text-center table-header">
             <tr>
               <th><i class="bi bi-hash"></i> Posición</th>
               <th><i class="bi bi-person-fill"></i> Piloto</th>
@@ -38,7 +40,7 @@
     </div>
 
     <div v-else class="text-center mt-5">
-      <div class="spinner-border text-secondary" role="status"></div>
+      <div class="spinner-border" role="status"></div>
       <p class="mt-3 text-muted">Cargando resultados...</p>
     </div>
   </div>
@@ -87,3 +89,43 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+body.dark-mode {
+  --bg-main: #121212;
+  --text-main: #e0e0e0;
+  --header-bg: #2d2d2d;
+  --header-text: #ffffff;
+  --row-hover: #2a2a2a;
+  --table-border: #444;
+}
+
+.table {
+  background-color: var(--bg-main) !important;
+  color: var(--text-main) !important;
+}
+
+.table td,
+.table th {
+  background-color: var(--bg-main) !important;
+  color: var(--text-main) !important;
+  border-color: var(--table-border) !important;
+}
+
+.spinner-border {
+  border-color: var(--text-main);
+  border-right-color: transparent;
+}
+
+.text-dark-mode {
+  color: var(--text-main);
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.table-responsive table {
+  min-width: 600px;
+}
+</style>

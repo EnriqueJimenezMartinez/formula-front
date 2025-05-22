@@ -1,24 +1,23 @@
-
 <template>
   <div
     id="layoutSidenav_content"
     class="my-5 mx-5 rounded-4"
-    style="background-color: #ffffff; min-height: 100vh"
+    style="min-height: 100vh"
   >
     <main>
       <div class="container-fluid px-4 py-4">
-        <h2 class="mb-4 text-center text-muted fw-bold display-6">📰 Últimas Noticias</h2>
+        <h2 class="mb-4 text-center fw-bold display-6 text-muted">📰 Últimas Noticias</h2>
 
         <div class="row mb-4">
           <div class="col-md-6 mb-2 mb-md-0">
             <div class="input-group shadow-sm">
-              <span class="input-group-text bg-white border-secondary">
+              <span class="input-group-text border-secondary bg-card">
                 <i class="bi bi-search"></i>
               </span>
               <input
                 v-model="searchQuery"
                 type="text"
-                class="form-control bg-white border-secondary"
+                class="form-control border-secondary bg-card text-main"
                 placeholder="Buscar por título o autor..."
               />
             </div>
@@ -26,7 +25,7 @@
           <div class="col-md-6">
             <select
               v-model="sortOrder"
-              class="form-select shadow-sm bg-white text-black border-secondary custom-select"
+              class="form-select shadow-sm border-secondary bg-card text-main"
             >
               <option value="desc">Más recientes</option>
               <option value="asc">Más antiguos</option>
@@ -38,13 +37,13 @@
           v-if="loading"
           class="alert alert-info text-center d-flex justify-content-center align-items-center"
         >
-          <div class="spinner-border text-light me-2" role="status"></div>
+          <div class="spinner-border me-2" role="status"></div>
           Cargando noticias...
         </div>
 
         <div v-else-if="filteredNews.length" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
           <div class="col" v-for="(n, index) in filteredNews" :key="index">
-            <div class="card shadow border-0 rounded-4 h-100 news-card bg-white text-dark">
+            <div class="card shadow border-0 rounded-4 h-100 news-card">
               <div class="card-body p-4">
                 <div v-if="n.image_url" class="mb-3">
                   <img
@@ -55,7 +54,7 @@
                   />
                 </div>
 
-                <h5 class="card-title text-dark fw-bold d-flex align-items-center mb-3">
+                <h5 class="card-title fw-bold d-flex align-items-center mb-3">
                   {{ n.title }}
                   <i
                     class="bi bi-info-circle ms-2 text-primary"
@@ -63,7 +62,7 @@
                     :title="`Haz clic para ver la noticia completa de ${n.title}`"
                   ></i>
                 </h5>
-                <p class="card-text text-dark mb-4">{{ n.body.substring(0, 150) }}...</p>
+                <p class="card-text mb-4">{{ n.body.substring(0, 150) }}...</p>
 
                 <div class="d-flex justify-content-start align-items-center mt-3">
                   <a :href="'/news/' + n.slug" class="btn btn-sm btn-outline-light fw-semibold">
@@ -88,13 +87,13 @@
               aria-hidden="true"
             >
               <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content bg-white text-dark rounded-4">
+                <div class="modal-content rounded-4 modal-content-custom">
                   <div class="modal-header border-secondary">
-                    <h5 class="modal-title text-dark" id="modalTitle">{{ n.title }}</h5>
+                    <h5 class="modal-title" id="modalTitle">{{ n.title }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                   </div>
                   <div class="modal-body">
-                    <p class="text-dark">{{ n.body }}</p>
+                    <p>{{ n.body }}</p>
                   </div>
                 </div>
               </div>
@@ -155,20 +154,28 @@ const filteredNews = computed(() => {
 </script>
 
 <style scoped>
-* {
-  font-family: 'Lato', sans-serif;
+:root {
+  --bg-main: #ffffff;
+  --bg-card: #ffffff;
+  --text-main: #212529;
+  --border-color: #ced4da;
 }
 
-h2,
-.card-title,
-.modal-title {
-  font-family: 'Playfair Display', serif;
-  font-weight: 700;
+body.dark-mode {
+  --bg-main: #121212;
+  --bg-card: #1f1f1f;
+  --text-main: #f1f1f1;
+  --border-color: #444;
+}
+
+#layoutSidenav_content {
+  background-color: var(--bg-main);
+  color: var(--text-main);
 }
 
 .news-card {
-  background-color: #ffffff;
-  color: #212529;
+  background-color: var(--bg-card);
+  color: var(--text-main);
   border-radius: 12px;
   height: 100%;
   display: flex;
@@ -177,7 +184,7 @@ h2,
 
 .news-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease-in-out;
 }
 
@@ -190,26 +197,25 @@ h2,
 }
 
 input.form-control,
-select.form-select {
-  background-color: #ffffff;
+select.form-select,
+.input-group-text {
+  background-color: var(--bg-card) !important;
   border-radius: 12px;
-  color: #000;
-  font-family: 'Lato', sans-serif;
+  color: var(--text-main);
+  border-color: var(--border-color);
 }
 
 .btn-outline-light {
   border-radius: 12px;
-  border-color: #212529;
-  color: #212529;
+  border-color: var(--text-main);
+  color: var(--text-main);
   background-color: transparent;
   transition: all 0.2s ease-in-out;
-  font-family: 'Lato', sans-serif;
 }
 
 .btn-outline-light:hover {
-  background-color: #343a40 !important;
-  color: #ffffff;
-  border-color: #212529;
+  background-color: var(--text-main) !important;
+  color: var(--bg-main) !important;
 }
 
 .card-body .d-flex {
@@ -218,10 +224,6 @@ select.form-select {
   align-items: center;
   margin-top: auto;
   gap: 1rem;
-}
-
-.card-body .d-flex .btn-outline-light {
-  margin-left: 0;
 }
 
 .card-body .d-flex .btn-sm:last-child {
@@ -233,23 +235,15 @@ select.form-select {
   margin-left: 0.5rem;
 }
 
-.modal-content {
-  border-radius: 12px;
+.modal-content-custom {
+  background-color: var(--bg-card);
+  color: var(--text-main);
 }
 
 .spinner-border {
   width: 2rem;
   height: 2rem;
-}
-
-.btn-sm {
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
-}
-
-.row-cols-1,
-.row-cols-md-2,
-.row-cols-lg-3 {
-  margin-bottom: 15px;
+  border-color: var(--text-main);
+  border-right-color: transparent;
 }
 </style>

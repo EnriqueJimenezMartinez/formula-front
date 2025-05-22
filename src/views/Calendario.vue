@@ -1,9 +1,9 @@
 <template>
   <div
     class="container my-5 p-4 rounded-4 shadow-sm"
-    style="background-color: #ffffff; min-height: 100vh"
+    style="min-height: 100vh; background-color: var(--bg-main); color: var(--text-main)"
   >
-    <h2 class="text-center text-muted mb-4 fw-bold display-6">
+    <h2 class="text-center mb-4 fw-bold display-6 text-muted">
       🏁 Calendario F1 - Temporada 2025
     </h2>
 
@@ -12,7 +12,7 @@
         <input
           type="text"
           v-model="search"
-          class="form-control shadow-sm bg-white text-dark border-secondary"
+          class="form-control shadow-sm border-secondary"
           placeholder="🔎 Buscar Gran Premio..."
         />
       </div>
@@ -35,7 +35,7 @@
       <ul class="pagination justify-content-center">
         <li class="page-item" :class="{ disabled: currentPage === 1 }">
           <button
-            class="page-link bg-light text-dark border-secondary"
+            class="page-link border-secondary"
             @click="currentPage--"
             :disabled="currentPage === 1"
           >
@@ -43,13 +43,13 @@
           </button>
         </li>
         <li class="page-item disabled">
-          <span class="page-link bg-white text-dark fw-semibold border-secondary">
+          <span class="page-link fw-semibold border-secondary">
             Página {{ currentPage }} de {{ totalPages }}
           </span>
         </li>
         <li class="page-item" :class="{ disabled: currentPage === totalPages }">
           <button
-            class="page-link bg-light text-dark border-secondary"
+            class="page-link border-secondary"
             @click="currentPage++"
             :disabled="currentPage === totalPages"
           >
@@ -117,33 +117,55 @@ export default {
 </script>
 
 <style scoped>
+:root {
+  --bg-main: #ffffff;
+  --text-main: #212529;
+  --input-bg: #ffffff;
+  --border-color: #6c757d;
+  --page-hover: #343a40;
+  --page-disabled-bg: #e9ecef;
+  --page-disabled-text: #6c757d;
+}
+
+body.dark-mode {
+  --bg-main: #121212;
+  --text-main: #f1f1f1;
+  --input-bg: #1f1f1f;
+  --border-color: #444;
+  --page-hover: #495057;
+  --page-disabled-bg: #2c2c2c;
+  --page-disabled-text: #999;
+}
+
 .form-control {
-  background-color: #ffffff;
-  color: #000;
-  border: 1px solid #6c757d;
+  background-color: var(--input-bg);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
 }
 
 .form-control:focus {
-  border-color: #212529;
+  border-color: var(--text-main);
   box-shadow: 0 0 10px rgba(33, 37, 41, 0.4);
   outline: none;
 }
 
 .pagination .page-link {
+  background-color: var(--input-bg);
+  color: var(--text-main);
   border-radius: 12px;
   font-weight: 500;
   transition: background-color 0.3s ease-in-out;
 }
 
 .pagination .page-link:hover {
-  background-color: #343a40;
+  background-color: var(--page-hover);
   color: #ffffff;
 }
 
 .page-item.disabled .page-link {
-  background-color: #e9ecef;
-  color: #6c757d;
-  border-color: #ced4da;
+  background-color: var(--page-disabled-bg);
+  color: var(--page-disabled-text);
+  border-color: var(--border-color);
 }
 </style>

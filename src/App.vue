@@ -90,4 +90,63 @@ body.dark-mode a:hover {
   right: 10px;
   z-index: 9999;
 }
+
+body.dark-mode .bg-white,
+body.dark-mode .bg-light {
+  background-color: #1e1e1e !important;
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode .text-dark,
+body.dark-mode .text-muted {
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode .btn-outline-dark {
+  color: #e0e0e0 !important;
+  border-color: #888 !important;
+}
+
+body.dark-mode .btn-outline-dark:hover {
+  background-color: #333 !important;
+  color: #fff !important;
+}
+
+body.dark-mode footer {
+  background-color: #1a1a1a !important;
+  color: #e0e0e0 !important;
+  border-color: #333 !important;
+}
+
+body.dark-mode hr {
+  border-color: #444 !important;
+}
+
+body.dark-mode .table {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+}
+
+body.dark-mode .table-hover tbody tr:hover {
+  background-color: #2a2a2a;
+}
+
+body.dark-mode .table-secondary {
+  background-color: #333 !important;
+  color: #fff !important;
+}
+
+body.dark-mode a {
+  color: #9ecbff; 
+}
+
+body.dark-mode .border {
+  border-color: #444 !important;
+}
+
+body.dark-mode .spinner-border {
+  border-color: #aaa;
+  border-right-color: transparent;
+}
+
 </style>

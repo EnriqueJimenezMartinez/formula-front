@@ -74,7 +74,6 @@ const router = createRouter({
   routes,
 })
 
-// 🚨 Protección global de rutas
 router.beforeEach((to, from, next) => {
   const auth = useAuthStore()
   if (to.meta.requiresAuth && !auth.isAuthenticated) {
