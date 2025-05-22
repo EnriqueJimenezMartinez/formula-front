@@ -204,5 +204,9 @@ body.dark-mode header,
 body.dark-mode header * {
   color: #ffffff !important;
 }
+body.dark-mode,
+body.dark-mode * {
+  color: #ffffff !important;
+}
 
 </style>
