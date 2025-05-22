@@ -6,24 +6,23 @@ import FooterComponent from './components/FooterComponent.vue'
 const isDarkMode = ref(false)
 
 watch(isDarkMode, (val) => {
-  if (val) document.body.classList.add('dark-mode')
-  else document.body.classList.remove('dark-mode')
+  if (val) {
+    document.body.classList.add('dark-mode')
+  } else {
+    document.body.classList.remove('dark-mode')
+  }
 })
 
 onMounted(() => {
-  // Si quieres modo oscuro por defecto, cambia a true
-  isDarkMode.value = false
+  isDarkMode.value = true
 })
 </script>
 
 <template>
   <HeaderComponent />
-  <div class="container mt-3 text-end">
-    <button class="btn btn-outline-dark" @click="isDarkMode = !isDarkMode">
-      {{ isDarkMode ? 'Modo Claro' : 'Modo Oscuro' }}
-    </button>
-  </div>
+
   <RouterView />
+
   <FooterComponent />
 </template>
 
@@ -37,41 +36,58 @@ body.dark-mode {
   color: #e0e0e0 !important;
 }
 
-body.dark-mode .bg-white {
-  background-color: #1e1e1e !important;
+body.dark-mode,
+body.dark-mode * {
   color: #e0e0e0 !important;
 }
 
-body.dark-mode .text-dark {
-  color: #e0e0e0 !important;
+body.dark-mode .navbar {
+  background-color: #1a1a1a !important;
+  border-color: #333 !important;
 }
 
-body.dark-mode .border {
-  border-color: #444 !important;
-}
-
+/* Botones outline oscuro */
 body.dark-mode .btn-outline-dark {
   border-color: #ccc !important;
   color: #ccc !important;
 }
+
 body.dark-mode .btn-outline-dark:hover {
   background-color: #333 !important;
   color: #fff !important;
 }
 
-body.dark-mode table.table {
+/* Tarjetas con fondo y texto claros */
+body.dark-mode .card {
   background-color: #1e1e1e !important;
-  color: #e0e0e0 !important;
-}
-body.dark-mode thead.table-secondary {
-  background-color: #2c2c2c !important;
-  color: #e0e0e0 !important;
+  color: #fff !important;
 }
 
-body.dark-mode a.text-decoration-none.text-dark {
+body.dark-mode input.form-control,
+body.dark-mode select.form-select,
+body.dark-mode textarea.form-control {
+  background-color: #2c2c2c !important;
+  border: 1px solid #555 !important;
+  color: #fff !important;
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+  color: #999 !important;
+}
+
+body.dark-mode a {
   color: #82aaff !important;
 }
-body.dark-mode a.text-decoration-none.text-dark:hover {
+
+body.dark-mode a:hover {
   color: #aabfff !important;
+}
+
+.toggle-dark-mode {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 9999;
 }
 </style>
