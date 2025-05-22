@@ -1,6 +1,5 @@
 <template>
   <div class="container my-5 p-4 bg-white rounded-4 shadow-lg">
-    <!-- Estado de carga -->
     <div v-if="isLoading" class="text-center py-5 text-dark fade-in">
       <div class="spinner-border text-secondary" style="width: 3rem; height: 3rem;" role="status">
         <span class="visually-hidden">Cargando...</span>
@@ -8,7 +7,6 @@
       <p class="mt-3 fs-5 text-muted">Cargando noticia...</p>
     </div>
 
-    <!-- Noticia cargada -->
     <transition name="fade">
       <div v-if="!isLoading && newsStore.actualNews">
         <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
