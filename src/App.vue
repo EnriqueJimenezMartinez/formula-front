@@ -6,23 +6,24 @@ import FooterComponent from './components/FooterComponent.vue'
 const isDarkMode = ref(false)
 
 watch(isDarkMode, (val) => {
-  if (val) {
-    document.body.classList.add('dark-mode')
-  } else {
-    document.body.classList.remove('dark-mode')
-  }
+  if (val) document.body.classList.add('dark-mode')
+  else document.body.classList.remove('dark-mode')
 })
 
 onMounted(() => {
-  isDarkMode.value = true
+  // Si quieres modo oscuro por defecto, cambia a true
+  isDarkMode.value = false
 })
 </script>
 
 <template>
   <HeaderComponent />
-
+  <div class="container mt-3 text-end">
+    <button class="btn btn-outline-dark" @click="isDarkMode = !isDarkMode">
+      {{ isDarkMode ? 'Modo Claro' : 'Modo Oscuro' }}
+    </button>
+  </div>
   <RouterView />
-
   <FooterComponent />
 </template>
 
@@ -33,67 +34,44 @@ html {
 
 body.dark-mode {
   background-color: #121212 !important;
-  color: #e0e0e0 !important; /* Texto blanco */
-}
-
-/* Para que todo texto dentro del modo oscuro sea blanco */
-body.dark-mode,
-body.dark-mode * {
   color: #e0e0e0 !important;
 }
 
-/* Navbar oscuro */
-body.dark-mode .navbar {
-  background-color: #1a1a1a !important;
-  border-color: #333 !important;
+body.dark-mode .bg-white {
+  background-color: #1e1e1e !important;
+  color: #e0e0e0 !important;
 }
 
-/* Botones outline oscuro */
+body.dark-mode .text-dark {
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode .border {
+  border-color: #444 !important;
+}
+
 body.dark-mode .btn-outline-dark {
   border-color: #ccc !important;
   color: #ccc !important;
 }
-
 body.dark-mode .btn-outline-dark:hover {
   background-color: #333 !important;
   color: #fff !important;
 }
 
-/* Tarjetas con fondo y texto claros */
-body.dark-mode .card {
+body.dark-mode table.table {
   background-color: #1e1e1e !important;
-  color: #fff !important;
+  color: #e0e0e0 !important;
 }
-
-/* Inputs y selects en modo oscuro */
-body.dark-mode input.form-control,
-body.dark-mode select.form-select,
-body.dark-mode textarea.form-control {
+body.dark-mode thead.table-secondary {
   background-color: #2c2c2c !important;
-  border: 1px solid #555 !important;
-  color: #fff !important;
+  color: #e0e0e0 !important;
 }
 
-/* Placeholders en inputs */
-body.dark-mode input::placeholder,
-body.dark-mode textarea::placeholder {
-  color: #999 !important;
-}
-
-/* Links en modo oscuro */
-body.dark-mode a {
+body.dark-mode a.text-decoration-none.text-dark {
   color: #82aaff !important;
 }
-
-body.dark-mode a:hover {
+body.dark-mode a.text-decoration-none.text-dark:hover {
   color: #aabfff !important;
-}
-
-/* Toggle button simple */
-.toggle-dark-mode {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  z-index: 9999;
 }
 </style>
