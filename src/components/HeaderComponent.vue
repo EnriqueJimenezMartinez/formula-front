@@ -72,6 +72,16 @@
           </li>
           <li class="nav-item">
             <button
+              @click="toggleDarkMode"
+              class="btn btn-outline-dark btn-sm"
+              data-bs-toggle="tooltip"
+              :title="isDarkMode ? 'Modo claro' : 'Modo oscuro'"
+            >
+              <i :class="isDarkMode ? 'bi bi-sun-fill' : 'bi bi-moon-stars-fill'"></i>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button
               @click="handleLogout"
               class="btn btn-outline-secondary btn-sm"
               data-bs-toggle="tooltip"
@@ -112,23 +122,35 @@ function toggleNavbar() {
 }
 
 function closeNavbar() {
-  // Solo cierra si está abierto y es móvil
   if (window.innerWidth < 992 && bsCollapse && isNavCollapsed.value) {
     bsCollapse.hide()
     isNavCollapsed.value = false
   }
 }
+const isDarkMode = ref(false)
+
+function applyTheme() {
+  document.body.classList.toggle('dark-mode', isDarkMode.value)
+  document.documentElement.style.backgroundColor = isDarkMode.value ? '#121212' : '#ffffff'
+}
+
+function toggleDarkMode() {
+  isDarkMode.value = !isDarkMode.value
+  localStorage.setItem('darkMode', isDarkMode.value)
+  applyTheme()
+}
 
 onMounted(() => {
   bsCollapse = new bootstrap.Collapse(navbarContent.value, { toggle: false })
 
-  // Tooltips
+  const savedMode = localStorage.getItem('darkMode')
+  if (savedMode !== null) {
+    isDarkMode.value = savedMode === 'true'
+    applyTheme()
+  }
+
   const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-  tooltipTriggerList.forEach((tooltipTriggerEl) => {
-    new bootstrap.Tooltip(tooltipTriggerEl, {
-      trigger: 'hover',
-    })
-  })
+  tooltipTriggerList.forEach((el) => new bootstrap.Tooltip(el, { trigger: 'hover' }))
 })
 </script>
 

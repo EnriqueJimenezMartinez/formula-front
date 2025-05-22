@@ -7,7 +7,7 @@
             <div class="card-body p-5 text-center">
               <form @submit.prevent="onSubmit" class="mb-md-5 mt-md-4 pb-3">
 
-                <h2 class="fw-bold mb-4 text-uppercase">Login</h2>
+                <h2 class="fw-bold mb-4 text-uppercase">Inicio de Sesión</h2>
                 <div class="form-outline mb-4">
                   <input
                     v-model="email"
@@ -97,6 +97,5 @@ async function onSubmit() {
   }
 }
 </script>
-
 <style scoped>
 </style>
