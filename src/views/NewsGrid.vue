@@ -79,6 +79,7 @@
               </div>
             </div>
 
+            <!-- Modal -->
             <div
               class="modal fade"
               :id="'modalNoticia' + n.id"
@@ -87,7 +88,7 @@
               aria-hidden="true"
             >
               <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content rounded-4 modal-content-custom">
+                <div class="modal-content modal-content-custom">
                   <div class="modal-header border-secondary">
                     <h5 class="modal-title" id="modalTitle">{{ n.title }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -98,6 +99,7 @@
                 </div>
               </div>
             </div>
+            <!-- Fin modal -->
           </div>
         </div>
 
@@ -144,7 +146,9 @@ const filteredNews = computed(() => {
   const query = searchQuery.value.trim().toLowerCase()
 
   let filtered = newsList.value.filter(
-    (n) => n.title.toLowerCase().includes(query) || n.user?.name?.toLowerCase().includes(query),
+    (n) =>
+      n.title.toLowerCase().includes(query) ||
+      n.user?.name?.toLowerCase().includes(query),
   )
 
   return filtered.sort((a, b) => {
@@ -236,8 +240,14 @@ select.form-select,
 }
 
 .modal-content-custom {
-  background-color: var(--bg-card);
-  color: var(--text-main);
+  background-color: #fff !important;
+  color: #212529 !important;
+  border-radius: 1rem;
+}
+
+body.dark-mode .modal-content-custom {
+  background-color: #1f1f1f !important;
+  color: #f1f1f1 !important;
 }
 
 .spinner-border {
