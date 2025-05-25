@@ -5,7 +5,7 @@
       style="background-color: #f8f9fa"
     >
       <RouterLink to="/" class="navbar-brand d-flex align-items-center gap-2">
-        <img src="/DaleFormula.png" alt="Logo" style="height: 60px; width: auto" />
+        <img :src="logoSrc" alt="Logo" style="height: 60px; width: auto" />
         <span class="fw-bold fs-4 text-dark d-none d-md-inline">DaleFormula</span>
       </RouterLink>
 
@@ -99,7 +99,7 @@
 <script setup>
 import { RouterLink, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import * as bootstrap from 'bootstrap'
 
 const auth = useAuthStore()
@@ -127,6 +127,7 @@ function closeNavbar() {
     isNavCollapsed.value = false
   }
 }
+
 const isDarkMode = ref(false)
 
 function applyTheme() {
@@ -139,6 +140,10 @@ function toggleDarkMode() {
   localStorage.setItem('darkMode', isDarkMode.value)
   applyTheme()
 }
+
+const logoSrc = computed(() =>
+  isDarkMode.value ? '/DaleFormula-dark.png' : '/DaleFormula.png'
+)
 
 onMounted(() => {
   bsCollapse = new bootstrap.Collapse(navbarContent.value, { toggle: false })
