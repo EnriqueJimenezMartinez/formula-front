@@ -28,7 +28,6 @@
             </select>
           </div>
         </div>
-
         <div
           v-if="loading"
           class="alert alert-info text-center d-flex justify-content-center align-items-center"
@@ -37,78 +36,73 @@
           Cargando noticias...
         </div>
 
-        <Draggable
-          v-else-if="filteredNews.length"
-          v-model="newsList"
-          tag="div"
-          class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4"
-          item-key="id"
-        >
-          <template #item="{ element: n }">
-            <div class="col">
-              <div class="card shadow border-0 rounded-4 h-100 news-card">
-                <img
-                  v-if="n.image_url"
-                  :src="n.image_url"
-                  alt="Imagen de la noticia"
-                  class="news-img"
-                />
-
-                <div class="card-body">
-                  <header>
-                    <h5 class="card-title fw-bold d-flex align-items-center mb-3">
-                      {{ n.title }}
-                      <i
-                        class="bi bi-info-circle ms-2 text-primary"
-                        data-bs-toggle="tooltip"
-                        :title="`Haz clic para ver la noticia completa de ${n.title}`"
-                      ></i>
-                    </h5>
-                  </header>
-
-                  <section>
-                    <p class="card-text">{{ n.body.substring(0, 150) }}...</p>
-                  </section>
-
-                  <footer class="d-flex">
-                    <a :href="'/news/' + n.slug" class="btn btn-sm btn-outline-light fw-semibold">
-                      Leer más
-                    </a>
-                    <button
-                      class="btn btn-outline-light btn-sm"
-                      data-bs-toggle="modal"
-                      :data-bs-target="'#modalNoticia' + n.id"
-                    >
-                      Vista previa
-                    </button>
-                  </footer>
+        <div v-else-if="filteredNews.length">
+          <draggable
+            v-model="sortedNews"
+            item-key="id"
+            class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4"
+          >
+            <template #item="{ element: n }">
+              <div v-if="matchesFilter(n)" class="col">
+                <div class="card shadow border-0 rounded-4 h-100 news-card">
+                  <img
+                    v-if="n.image_url"
+                    :src="n.image_url"
+                    alt="Imagen de la noticia"
+                    class="news-img"
+                  />
+                  <div class="card-body">
+                    <header>
+                      <h5 class="card-title fw-bold d-flex align-items-center mb-3">
+                        {{ n.title }}
+                        <i
+                          class="bi bi-info-circle ms-2 text-primary"
+                          data-bs-toggle="tooltip"
+                          :title="`Haz clic para ver la noticia completa de ${n.title}`"
+                        ></i>
+                      </h5>
+                    </header>
+                    <section>
+                      <p class="card-text">{{ n.body.substring(0, 150) }}...</p>
+                    </section>
+                    <footer class="d-flex">
+                      <a :href="'/news/' + n.slug" class="btn btn-sm btn-outline-light fw-semibold">
+                        Leer más
+                      </a>
+                      <button
+                        class="btn btn-outline-light btn-sm ms-2"
+                        data-bs-toggle="modal"
+                        :data-bs-target="'#modalNoticia' + n.id"
+                      >
+                        Vista previa
+                      </button>
+                    </footer>
+                  </div>
                 </div>
-              </div>
 
-              <!-- Modal -->
-              <div
-                class="modal fade"
-                :id="'modalNoticia' + n.id"
-                tabindex="-1"
-                :aria-labelledby="'modalTitle' + n.id"
-                aria-hidden="true"
-              >
-                <div class="modal-dialog modal-lg modal-dialog-centered">
-                  <div class="modal-content modal-content-custom">
-                    <div class="modal-header border-secondary">
-                      <h5 class="modal-title" :id="'modalTitle' + n.id">{{ n.title }}</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                      <p>{{ n.body }}</p>
+                <div
+                  class="modal fade"
+                  :id="'modalNoticia' + n.id"
+                  tabindex="-1"
+                  aria-labelledby="modalTitle"
+                  aria-hidden="true"
+                >
+                  <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content modal-content-custom">
+                      <div class="modal-header border-secondary">
+                        <h5 class="modal-title" id="modalTitle">{{ n.title }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                      </div>
+                      <div class="modal-body">
+                        <p>{{ n.body }}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <!-- Fin modal -->
-            </div>
-          </template>
-        </Draggable>
+            </template>
+          </draggable>
+        </div>
 
         <div v-else class="alert alert-warning text-center mt-4">
           ⚠️ No hay noticias disponibles.
@@ -119,51 +113,62 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { useNewsStore } from '@/stores/news'
-import Draggable from 'vuedraggable'
+import draggable from 'vuedraggable'
 
 const newsStore = useNewsStore()
 const loading = ref(false)
-const error = ref('')
 const newsList = ref([])
-
 const searchQuery = ref('')
 const sortOrder = ref('desc')
+const sortedNews = ref([])
 
 onMounted(() => {
   loading.value = true
-  error.value = ''
-
   newsStore
     .viewAllNews()
     .then((res) => {
       newsList.value = res
+      sortedNews.value = [...res]
+      sortSortedNews()
     })
     .catch((e) => {
-      error.value =
-        e.response?.status === 401 ? 'Usuario o contraseña incorrectos' : 'Error de conexión'
-      console.error(error.value)
+      console.error(e)
     })
     .finally(() => {
       loading.value = false
     })
 })
 
+// Ordenar
+function sortSortedNews() {
+  sortedNews.value.sort((a, b) => (sortOrder.value === 'asc' ? a.id - b.id : b.id - a.id))
+}
+
+// Actualizar orden cuando cambia el selector
+watch(sortOrder, () => {
+  sortSortedNews()
+})
+
 const filteredNews = computed(() => {
   const query = searchQuery.value.trim().toLowerCase()
-  let filtered = newsList.value.filter(
-    (n) =>
+  return sortedNews.value.filter(
+    n =>
       n.title.toLowerCase().includes(query) ||
-      n.user?.name?.toLowerCase().includes(query),
+      n.user?.name?.toLowerCase().includes(query)
   )
-
-  return filtered.sort((a, b) => {
-    return sortOrder.value === 'asc' ? a.id - b.id : b.id - a.id
-  })
 })
-</script>
 
+function matchesFilter(n) {
+  const query = searchQuery.value.trim().toLowerCase()
+  if (query === '') return true
+  return (
+    n.title.toLowerCase().includes(query) ||
+    n.user?.name?.toLowerCase().includes(query)
+  )
+}
+</script>
 
 <style scoped>
 :root {
@@ -274,5 +279,21 @@ body.dark-mode .modal-content-custom {
 .drag-chosen {
   box-shadow: 0 0 0 3px #0d6efd55;
   transform: rotate(1deg);
+}
+.news-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
+
+.news-card {
+  background-color: #f8f9fa;
+  transition: transform 0.2s;
+}
+
+.news-card:hover {
+  transform: translateY(-5px);
 }
 </style>
