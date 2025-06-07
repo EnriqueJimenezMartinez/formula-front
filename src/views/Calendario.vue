@@ -95,9 +95,10 @@ export default {
       currentPage.value = 1
     })
 
+    // ✅ Usando la API de apijolca
     onMounted(async () => {
       try {
-        const response = await fetch('https://ergast.com/api/f1/current.json')
+        const response = await fetch('https://api.jolpi.ca/ergast/f1/current.json')
         const data = await response.json()
         races.value = data.MRData.RaceTable.Races
       } catch (error) {
