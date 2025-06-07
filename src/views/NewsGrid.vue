@@ -1,9 +1,5 @@
 <template>
-  <div
-    id="layoutSidenav_content"
-    class="my-5 mx-5 rounded-4"
-    style="min-height: 100vh"
-  >
+  <div id="layoutSidenav_content" class="my-5 mx-5 rounded-4" style="min-height: 100vh">
     <main>
       <div class="container-fluid px-4 py-4">
         <h2 class="mb-4 text-center fw-bold display-6 text-muted">📰 Últimas Noticias</h2>
@@ -41,67 +37,78 @@
           Cargando noticias...
         </div>
 
-        <div v-else-if="filteredNews.length" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-          <div class="col" v-for="(n, index) in filteredNews" :key="index">
-            <div class="card shadow border-0 rounded-4 h-100 news-card">
-              <div class="card-body p-4">
-                <div v-if="n.image_url" class="mb-3">
-                  <img
-                    :src="n.image_url"
-                    alt="Imagen de la noticia"
-                    class="img-fluid rounded-3 shadow-sm"
-                    style="max-height: 200px; width: 100%; object-fit: cover"
-                  />
-                </div>
+        <Draggable
+          v-else-if="filteredNews.length"
+          v-model="newsList"
+          tag="div"
+          class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4"
+          item-key="id"
+        >
+          <template #item="{ element: n }">
+            <div class="col">
+              <div class="card shadow border-0 rounded-4 h-100 news-card">
+                <img
+                  v-if="n.image_url"
+                  :src="n.image_url"
+                  alt="Imagen de la noticia"
+                  class="news-img"
+                />
 
-                <h5 class="card-title fw-bold d-flex align-items-center mb-3">
-                  {{ n.title }}
-                  <i
-                    class="bi bi-info-circle ms-2 text-primary"
-                    data-bs-toggle="tooltip"
-                    :title="`Haz clic para ver la noticia completa de ${n.title}`"
-                  ></i>
-                </h5>
-                <p class="card-text mb-4">{{ n.body.substring(0, 150) }}...</p>
+                <div class="card-body">
+                  <header>
+                    <h5 class="card-title fw-bold d-flex align-items-center mb-3">
+                      {{ n.title }}
+                      <i
+                        class="bi bi-info-circle ms-2 text-primary"
+                        data-bs-toggle="tooltip"
+                        :title="`Haz clic para ver la noticia completa de ${n.title}`"
+                      ></i>
+                    </h5>
+                  </header>
 
-                <div class="d-flex justify-content-start align-items-center mt-3">
-                  <a :href="'/news/' + n.slug" class="btn btn-sm btn-outline-light fw-semibold">
-                    Leer más
-                  </a>
-                  <button
-                    class="btn btn-outline-light btn-sm"
-                    data-bs-toggle="modal"
-                    :data-bs-target="'#modalNoticia' + n.id"
-                  >
-                    Vista previa
-                  </button>
-                </div>
-              </div>
-            </div>
+                  <section>
+                    <p class="card-text">{{ n.body.substring(0, 150) }}...</p>
+                  </section>
 
-            <!-- Modal -->
-            <div
-              class="modal fade"
-              :id="'modalNoticia' + n.id"
-              tabindex="-1"
-              aria-labelledby="modalTitle"
-              aria-hidden="true"
-            >
-              <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content modal-content-custom">
-                  <div class="modal-header border-secondary">
-                    <h5 class="modal-title" id="modalTitle">{{ n.title }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                  </div>
-                  <div class="modal-body">
-                    <p>{{ n.body }}</p>
-                  </div>
+                  <footer class="d-flex">
+                    <a :href="'/news/' + n.slug" class="btn btn-sm btn-outline-light fw-semibold">
+                      Leer más
+                    </a>
+                    <button
+                      class="btn btn-outline-light btn-sm"
+                      data-bs-toggle="modal"
+                      :data-bs-target="'#modalNoticia' + n.id"
+                    >
+                      Vista previa
+                    </button>
+                  </footer>
                 </div>
               </div>
+
+              <!-- Modal -->
+              <div
+                class="modal fade"
+                :id="'modalNoticia' + n.id"
+                tabindex="-1"
+                :aria-labelledby="'modalTitle' + n.id"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                  <div class="modal-content modal-content-custom">
+                    <div class="modal-header border-secondary">
+                      <h5 class="modal-title" :id="'modalTitle' + n.id">{{ n.title }}</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                      <p>{{ n.body }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Fin modal -->
             </div>
-            <!-- Fin modal -->
-          </div>
-        </div>
+          </template>
+        </Draggable>
 
         <div v-else class="alert alert-warning text-center mt-4">
           ⚠️ No hay noticias disponibles.
@@ -114,11 +121,12 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { useNewsStore } from '@/stores/news'
+import Draggable from 'vuedraggable'
 
 const newsStore = useNewsStore()
 const loading = ref(false)
 const error = ref('')
-let newsList = ref([])
+const newsList = ref([])
 
 const searchQuery = ref('')
 const sortOrder = ref('desc')
@@ -144,7 +152,6 @@ onMounted(() => {
 
 const filteredNews = computed(() => {
   const query = searchQuery.value.trim().toLowerCase()
-
   let filtered = newsList.value.filter(
     (n) =>
       n.title.toLowerCase().includes(query) ||
@@ -156,6 +163,7 @@ const filteredNews = computed(() => {
   })
 })
 </script>
+
 
 <style scoped>
 :root {
@@ -178,26 +186,45 @@ body.dark-mode {
 }
 
 .news-card {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
   background-color: var(--bg-card);
   color: var(--text-main);
-  border-radius: 12px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+  border-radius: 1rem;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .news-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease-in-out;
+  transform: translateY(-8px);
+  box-shadow: 0 16px 24px rgba(0, 0, 0, 0.15);
+}
+
+.news-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .card-body {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  padding: 1.5rem;
+  gap: 1rem;
+}
+
+.card-title i {
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
+.card-body .d-flex {
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
-  height: 100%;
-  border-radius: 12px;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 input.form-control,
@@ -222,23 +249,6 @@ select.form-select,
   color: var(--bg-main) !important;
 }
 
-.card-body .d-flex {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  margin-top: auto;
-  gap: 1rem;
-}
-
-.card-body .d-flex .btn-sm:last-child {
-  margin-left: auto;
-}
-
-.card-title i {
-  vertical-align: middle;
-  margin-left: 0.5rem;
-}
-
 .modal-content-custom {
   background-color: #fff !important;
   color: #212529 !important;
@@ -255,5 +265,14 @@ body.dark-mode .modal-content-custom {
   height: 2rem;
   border-color: var(--text-main);
   border-right-color: transparent;
+}
+
+.drag-ghost {
+  opacity: 0.3;
+}
+
+.drag-chosen {
+  box-shadow: 0 0 0 3px #0d6efd55;
+  transform: rotate(1deg);
 }
 </style>
